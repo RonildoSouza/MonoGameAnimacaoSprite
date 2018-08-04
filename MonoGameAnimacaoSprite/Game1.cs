@@ -1,8 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
-using System;
 
 namespace MonoGameAnimacaoSprite
 {
@@ -10,7 +8,8 @@ namespace MonoGameAnimacaoSprite
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Boy _boy;
+
+        Personagem _personagem = new Personagem();
 
         public Game1()
         {
@@ -23,24 +22,11 @@ namespace MonoGameAnimacaoSprite
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
         }
 
-        protected override void Initialize()
-        {
-            _boy = new Boy
-            {
-                Velocity = new Vector2(200f)
-            };
-
-            _boy.Initialize(4, 4, TimeSpan.FromMilliseconds(200));
-
-            base.Initialize();
-        }
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _boy.LoadContent(Content, "boy");
-            _boy.IsActived = true;
+            _personagem.LoadContent(Content, "personagem");
         }
 
         protected override void Update(GameTime gameTime)
@@ -48,10 +34,7 @@ namespace MonoGameAnimacaoSprite
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 Exit();
 
-            var touchCollection = TouchPanel.GetState();
-            _boy.Move(ref touchCollection, ref gameTime);
-
-            //System.Diagnostics.Debug.WriteLine(_boy.Position);
+            _personagem.Mover(ref gameTime);
 
             base.Update(gameTime);
         }
@@ -62,7 +45,7 @@ namespace MonoGameAnimacaoSprite
 
             spriteBatch.Begin();
 
-            _boy.Draw(ref spriteBatch);
+            _personagem.Draw(ref spriteBatch);
 
             spriteBatch.End();
 
